@@ -46,33 +46,47 @@ brew install ffmpeg
 # 3. Install the Google Cloud SDK
 brew install --cask google-cloud-sdk
 
-# 4. Authenticate with Google Cloud
+### 2. Authenticate with Google Cloud
+
+Open a new terminal and run the following commands.
+
+```bash
+# 1. Authenticate with Google Cloud
 # This will open a browser window for you to log in.
 gcloud auth application-default login
+
+# 2. Set your Project ID
+# Replace "your-gcp-project-id" with your actual Google Cloud Project ID.
+gcloud config set project your-gcp-project-id
 ```
 
-### 2. Configure Projects
+### 3. Configure Projects
 
 Set up both the backend and frontend.
 
 ```bash
 # 1. Navigate to the project root
-cd /path/to/your/meeting-notes-suite
+cd /path/to/your/meeting-notes-agent
 
-# 2. Set up the Backend
+# 2. Set up Backend Environment File
+cd backend
+cp .env.example .env
+# Now, open the newly created '.env' file and add your Google Cloud Project ID.
+cd ..
+
+# 3. Install Backend Dependencies
 cd backend
 python3 -m venv .venv
-./.venv/bin/pip install google-adk pydub soundfile
+./.venv/bin/pip install -r requirements.txt
 cd ..
 
-# 3. Set up the Frontend
-cd frontend
+# 4. Install Frontend Dependencies
+cd frontend/adk-web
 npm install
-sudo npm install -g @angular/cli # Admin password required
-cd ..
+cd ../..
 ```
 
-### 3. Run the Application
+### 4. Run the Application
 
 You will need **two separate terminal windows** to run the servers.
 
@@ -104,8 +118,36 @@ Once both servers are running, open your web browser and navigate to:
 
 ---
 
-## 💡 How to Use
+## 💡 4. How to Use
 
 1.  From the "Tool to select" dropdown, choose `meeting_notes_agent`.
 2.  **For general chat:** Type any text message and press enter.
 3.  **To analyze an audio file:** Type the **full, absolute path** to your audio file (e.g., `/Users/yourname/Desktop/mymeeting.m4a`) and press enter.
+
+---
+
+## 🧑‍💻 5. Development with Gemini CLI
+
+This project was bootstrapped and primarily developed using the **Gemini CLI**. It is the recommended tool for making modifications, adding features, or fixing bugs, as it understands the project's structure and conventions.
+
+### Core Workflow
+
+The agent follows a Test-Driven Development (TDD) methodology. When requesting a new feature, it's best practice to frame your request in a way that encourages writing tests first.
+
+### Example Prompts
+
+Here are some example prompts you can use with the Gemini CLI from the project's root directory:
+
+**1. Running All Backend Tests:**
+> Run all tests for the backend.
+
+*(This will trigger the command: `./.venv/bin/pytest backend/`)*
+
+**2. Adding a New Feature (Tool):**
+> Create a new ADK tool in `backend/agents/meeting_notes_agent/tools/` named `summarizer.py`. It should have a function `summarize(text: str) -> str` that returns a one-sentence summary of the input text. Please follow TDD by creating `backend/tests/test_summarizer.py` first.
+
+**3. Refactoring Existing Code:**
+> Refactor the `file_saver.py` tool to handle `PermissionError` exceptions specifically and return a user-friendly error message. Also, add a test case for this scenario.
+
+**4. Understanding the Code:**
+> Explain the logic inside the `transcribe_audio` function in `backend/agents/meeting_notes_agent/tools/transcription.py`.

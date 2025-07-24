@@ -20,4 +20,4 @@ frontend/.angular/
 *~
 
 # macOS specific files
-.DS_Store
+.DS_Store\n# Environment variables\nbackend/.env
