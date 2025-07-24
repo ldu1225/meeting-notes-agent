@@ -1,0 +1,23 @@
+# Backend - Python
+backend/.venv/
+backend/__pycache__/
+backend/agents/__pycache__/
+backend/agents/meeting_notes_agent/tools/__pycache__/
+backend/sessions.db
+backend/sessions.db-journal
+backend/temp_*.wav
+backend/meeting_audio.m4a
+
+# Frontend - Node
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+
+# IDE/Editor specific files
+.idea/
+.vscode/
+*.swp
+*~
+
+# macOS specific files
+.DS_Store
